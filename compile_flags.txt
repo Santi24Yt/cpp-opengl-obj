@@ -1,0 +1,8 @@
+-I./libs/
+-lglfw
+-lGL
+-lGLEW
+-Wall
+-Werror
+-xc++
+-std=c++11
