@@ -90,7 +90,8 @@ void Modelo::genVertexArray()
 
 void Modelo::initgl()
 {
-  shader = new Shader("./shader/test.vert", "./shader/test.frag");
+  shader = new Shader("./shader/cubo.vert", "./shader/cubo.frag");
+  modelmat = Matrix4();
 
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
@@ -112,15 +113,21 @@ void Modelo::initgl()
   glEnableVertexAttribArray(1);
 }
 
-void Modelo::rendergl(Vector3 &posCam, Matrix4 &look, Matrix4 &proy, Matrix4 &vista)
+void Modelo::rendergl(Vector3 &posCam, Matrix4 &look, Matrix4 &proy)
 {
   shader->use();
 
   shader->setVec3("posCam", posCam.glm());
-  shader->setMat4x4("model", glm::mat4(1.0f));
+  shader->setMat4x4("model", modelmat.glm());
   shader->setMat4x4("view", look.glm());
   shader->setMat4x4("projection", proy.glm());
 
   glBindVertexArray(VAO);
   glDrawElements(GL_TRIANGLES, caras.size()*3, GL_UNSIGNED_INT, 0);
+}
+
+void Modelo::update(float t)
+{
+  float angle = t * (M_PI_4); // 45 grados por segundo
+  modelmat = Matrix4::rotateY(angle);
 }

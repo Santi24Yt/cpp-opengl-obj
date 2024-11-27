@@ -35,19 +35,19 @@ int main(int argc, char *argv[])
 
   Modelo modelo1(&objf);
   modelo1.genVertexArray();
-  // modelo1.initgl();
+  modelo1.initgl();
 
   Puntof centroCuboPf = objf.centroProm();
   Vector3 centroCubo(centroCuboPf.x, centroCuboPf.y, centroCuboPf.z);
 
-  Vector3 cam(centroCuboPf.x + objf.anchox() + 20, 2, 0);
+  Vector3 cam(centroCuboPf.x + objf.anchox() + 10, 5, 0);
 
   std::cout << "Modelo: " << objf.filedir << std::endl;
   std::cout << "No. de vértices: " << objf.vertices.size() << std::endl;
   std::cout << "No. de caras: " << objf.caras.size() << std::endl;
 
-  model = new Model(modelo1);
-  model->initModel();
+  // model = new Model(modelo1);
+  // model->initModel();
 
   Matrix4 view = Matrix4::lookAt(cam, centroCubo, Vector3(0.0f,1.0f,0.0f));
   Matrix4 projection = Matrix4::perspective(45.0f, 1000.0f/800.0f, 0.1f, 100.0f);
@@ -69,12 +69,16 @@ int main(int argc, char *argv[])
   {
     w1.clear();
 
-    model->renderModel(cam.glm(), view.glm(), projection.glm());
+    // model->renderModel(cam.glm(), view.glm(), projection.glm());
+
+    modelo1.rendergl(cam, view, projection);
 
     if (w1.update() == -1)
       break;
 
-    model->updateModel(glfwGetTime());
+    // model->updateModel(glfwGetTime());
+    
+    modelo1.update(glfwGetTime());
   }
 
   return 0;

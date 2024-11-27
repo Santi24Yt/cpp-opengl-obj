@@ -39,7 +39,8 @@ class Modelo {
 
   void genVertexArray();
   void initgl();
-  void rendergl(Vector3 &posCam, Matrix4 &look, Matrix4 &proy, Matrix4 &vista);
+  void rendergl(Vector3 &posCam, Matrix4 &look, Matrix4 &proy);
+  void update(float t);
 
   ~Modelo()
   {
@@ -54,6 +55,7 @@ class Modelo {
   private:
   Obj* obj;
   vector<Vector4> verticesModelo;
+  Matrix4 modelmat;
 };
 
 #endif
