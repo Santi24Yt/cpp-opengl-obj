@@ -1,8 +1,11 @@
 #include "model.h"
+#include <iomanip>
 
 
     Model::Model()
     {
+        vn = 48;
+        vertices = new GLfloat[48];
 
         vertices[0] = -0.5f; vertices[1]  = -0.5f; vertices[2]  = -0.5f; vertices[3]  = -1.0f; vertices[4]  = -1.0f; vertices[5]  = -1.0f; // v0     
         vertices[6]  = 0.5f; vertices[7]  = -0.5f; vertices[8]  = -0.5f; vertices[9]  = 1.0f; vertices[10] = -1.0f; vertices[11] = -1.0f; // v1
@@ -12,6 +15,9 @@
         vertices[30] = 0.5f; vertices[31] = -0.5f; vertices[32] =  0.5f; vertices[33] =  1.0f; vertices[34] = -1.0f; vertices[35] = 1.0f; // v5
         vertices[36] = 0.5f; vertices[37] =  0.5f; vertices[38] =  0.5f; vertices[39] =  1.0f; vertices[40] = 1.0f; vertices[41] = 1.0f; // v6
         vertices[42] =-0.5f; vertices[43] =  0.5f; vertices[44] =  0.5f; vertices[45] =  -1.0f; vertices[46] = 1.0f; vertices[47] = 1.0f; // v7
+    
+        in = 36;
+        indices = new GLuint[36];
 
         indices[0] = 0;indices[1] = 2;indices[2] = 1;indices[3] = 3;indices[4] = 2;indices[5] = 0; // Cara trasera
         indices[6] = 4;indices[7] = 5;indices[8] = 6;indices[9] = 6;indices[10] = 7;indices[11] = 4; // Cara delantera
@@ -23,13 +29,43 @@
 
     //Model::Model(GLfloat* vertices, GLuint indices){}
 
+    Model::Model(Modelo &m)
+    {
+        vn = m.verticesCam.size()*3*2;
+        vertices = new GLfloat[vn];
+
+        for (size_t i = 0; i < vn; i++)
+        {
+            vertices[i] = m.vertices[i];
+        }
+
+        in = m.caras.size()*3;
+        indices = new GLuint[in];
+
+        for (size_t i = 0; i < in; i++)
+        {
+            indices[i] = m.indices[i];
+        }
+    }
+
     void Model::initModel()
     {
 
+    // for (int k = 0; k < 48; k++)
+    // {
+    //   cout << std::fixed << std::setprecision(3);
+    //   cout << "vertices[" << (k) << "] = " << vertices[k] << "f" << endl;
+    // }
+    //
+    // for (int k = 0; k < 36; k++)
+    // {
+    //   cout << "indices[" << (k) << "] = " << indices[k] << endl;
+    // }
+
     modelmat = glm::mat4(1.0f);
-    // shader = new Shader("./shader/cubo.vert","./shader/cubo.frag");
+    shader = new Shader("./shader/cubo.vert","./shader/cubo.frag");
     // shader = new Shader("./shader/cubo_shade.vert","./shader/cubo_shade.frag");
-    shader = new Shader("./shader/cubo_phong.vert","./shader/cubo_phong.frag");
+    // shader = new Shader("./shader/cubo_phong.vert","./shader/cubo_phong.frag");
          // Crear y enlazar el VAO y VBO
     
     glGenVertexArrays(1, &VAO);
@@ -39,10 +75,10 @@
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vn*sizeof(GLfloat), vertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, in*sizeof(GLuint), indices, GL_STATIC_DRAW);
 
     // Especificar el layout del vertex shader
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
@@ -59,12 +95,12 @@
         modelmat = glm::rotate(glm::mat4(1.0), angle, glm::vec3(0.5f, 1.0f, 0.0f)); // Rotar alrededor de (0.5, 1.0, 0.0)
     }
 
-    void Model::renderModel(glm::mat4 view, glm::mat4 projection){
+    void Model::renderModel(glm::vec3 poscam, glm::mat4 view, glm::mat4 projection){
         
         shader->use();
 
         // Enviar las matrices al shader
-        shader->setVec3("posCam", glm::vec3(0.0f, 0.0f, -3.0f));
+        shader->setVec3("posCam", poscam);
         shader->setMat4x4("model", modelmat);
         shader->setMat4x4("view", view);
         shader->setMat4x4("projection", projection);
@@ -77,7 +113,7 @@
         
         // Dibujar el cubo
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, in, GL_UNSIGNED_INT, 0);
 
     }
     void Model::finish(){

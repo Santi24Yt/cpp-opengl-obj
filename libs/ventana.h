@@ -1,28 +1,29 @@
-#pragma once
+#ifndef VENTANA_H
+#define VENTANA_H
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include "model.h"
+#include <string>
 
-class Ventana{
-    public:
-        GLuint width, height;
-        GLFWwindow* window;
-        glm::mat4 view, projection;
+class Ventana
+{
+public:
+  int width;
+  int height;
+  std::string name;
 
-        Model *model;
+  Ventana(int w, int h, std::string n) : width(w), height(h), name(n) {};
 
-        Ventana();
-        Ventana(GLuint w, GLuint h);
-        void initGLFW();
-        void initGLEW();
-        void initModels(Model* m);
-        
-        void initViewProyection();
-        void render();
-        void update();
-        void idel();
-        void finish();
+  void open();
+  void clear();
+  int update();
+  void terminate();
+
+
+private:
+  GLFWwindow *win;
+
+  void initGLEW();
 };
+
+#endif
