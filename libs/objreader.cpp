@@ -49,6 +49,8 @@ void Obj::leer()
       leerVertice(ss, ln);
     else if (tipo == "f")
       leerCara(ss, ln);
+    else if (tipo == "vn")
+      leerNormales(ss, ln);
 
     ln++;
   }
@@ -119,6 +121,33 @@ void Obj::leerCara(stringstream &ss, int ln)
   }
 
   caras.push_back(indicesVertices);
+}
+
+void Obj::leerNormales(stringstream &ss, int ln)
+{
+  string t;
+  float pos[3];
+  int i = 0;
+
+
+  while (getline(ss, t, ' '))
+  {
+    pos[i] = stof(t);
+    i++;
+  }
+
+  if (i < 2)
+  {
+    cerr << "Normal mal formada en la línea " << ln << " llenando con 0.0" << endl;
+  }
+
+  for (; i < 3; i++)
+  {
+    pos[i] = 0.0f;
+  }
+
+  Puntof p = {pos[0], pos[1], pos[2]};
+  normales.push_back(p);
 }
 
 void Obj::imprimir()

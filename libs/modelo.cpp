@@ -1,6 +1,6 @@
 #include "modelo.h"
 #include <iostream>
-#include <iomanip>
+// #include <iomanip>
 
 void Modelo::toScreen(Matrix4 &vista, int wi, int h)
 {
@@ -60,10 +60,12 @@ void Modelo::genVertexArray()
     vertices[i+0] = (GLfloat)p.x;
     vertices[i+1] = (GLfloat)p.y;
     vertices[i+2] = (GLfloat)p.z;
+
     // Normales
-    vertices[i+3] = 0.0f;
-    vertices[i+4] = 0.0f;
-    vertices[i+5] = 0.0f;
+    Vector3 n = normales[j];
+    vertices[i+3] = (GLfloat)n.x;
+    vertices[i+4] = (GLfloat)n.y;
+    vertices[i+5] = (GLfloat)n.z;
 
     // for (int k = 0; k < 6; k++)
     // {
@@ -88,9 +90,9 @@ void Modelo::genVertexArray()
   }
 }
 
-void Modelo::initgl()
+void Modelo::initgl(string vert, string frag)
 {
-  shader = new Shader("./shader/cubo.vert", "./shader/cubo.frag");
+  shader = new Shader(vert.c_str(), frag.c_str());
   modelmat = Matrix4();
 
   glGenVertexArrays(1, &VAO);

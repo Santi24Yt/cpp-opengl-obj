@@ -20,6 +20,7 @@ class Obj {
   public:
   vector<Puntof> vertices;
   vector<vector<int>> caras;
+  vector<Puntof> normales;
   string filedir;
 
   Obj(string filedir);
@@ -45,6 +46,7 @@ class Obj {
 
   void leerVertice(stringstream &ss, int ln);
   void leerCara(stringstream &ss, int ln);
+  void leerNormales(stringstream &ss, int ln);
   pair<float, float> minmaxx();
   pair<float, float> minmaxy();
   pair<float, float> minmaxz();

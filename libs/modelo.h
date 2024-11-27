@@ -14,6 +14,7 @@ class Modelo {
   vector<Vector4> verticesCam;
   vector<pair<int, int>> pixeles;
   vector<vector<int>> caras;
+  vector<Vector3> normales;
   GLfloat *vertices = nullptr;
   GLuint *indices = nullptr;
   GLuint VAO, VBO, EBO;
@@ -29,6 +30,10 @@ class Modelo {
     verticesCam = verticesModelo;
     pixeles.resize(verticesModelo.size());
     caras = (*objp).caras;
+    for (Puntof n : (*objp).normales)
+    {
+      normales.push_back(Vector3(n.x, n.y, n.z));
+    }
   };
 
   void toScreen(Matrix4 &vista, int w, int h);
@@ -38,7 +43,7 @@ class Modelo {
   size_t indiceVerticeCara(vector<int> &cara, size_t i);
 
   void genVertexArray();
-  void initgl();
+  void initgl(string vert, string frag);
   void rendergl(Vector3 &posCam, Matrix4 &look, Matrix4 &proy);
   void update(float t);
 
