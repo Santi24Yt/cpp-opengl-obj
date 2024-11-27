@@ -1,0 +1,23 @@
+Para compilar:
+$ make
+
+Para ejecutar:
+$ ./openglobj [.obj] [vertex shader] [frag shader]
+
+Se puede indicar la dirección de un archivo .obj ej.
+$ ./openglobj ../objs/dragon.obj
+
+También se puede elegir que shaders usar (está el blanco por default)
+$ ./openglobj ../objs/dragon.obj ./shader/gourard.vertex ./shader/gourard.frag
+
+Clean:
+$ make clean
+
+
+Movimiento de cámara (flechitas):
+<- = - eje z
+-> = + eje z
+up = - eje x
+down + eje x
+space = + eje y
+shift = - eje y
