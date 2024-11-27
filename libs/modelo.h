@@ -15,6 +15,7 @@ class Modelo {
   vector<pair<int, int>> pixeles;
   vector<vector<int>> caras;
   vector<Vector3> normales;
+  vector<pair<int, int>> normIndex;
   GLfloat *vertices = nullptr;
   GLuint *indices = nullptr;
   GLuint VAO, VBO, EBO;
@@ -34,13 +35,15 @@ class Modelo {
     {
       normales.push_back(Vector3(n.x, n.y, n.z));
     }
+    normIndex = objp->normIndex;
   };
 
   void toScreen(Matrix4 &vista, int w, int h);
   void restoreVertices();
   void transform(Matrix4 &transform);
 
-  size_t indiceVerticeCara(vector<int> &cara, size_t i);
+  size_t indiceVertice(int i);
+  size_t indiceNormal(int i);
 
   void genVertexArray();
   void initgl(string vert, string frag);

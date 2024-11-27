@@ -99,7 +99,10 @@ void Obj::leerCara(stringstream &ss, int ln)
     while (getline(f, t2, '/'))
     {
       if (t2 == "")
+      {
+        i = (i+1) % 3;
         continue;
+      }
 
       switch (i)
       {
@@ -121,6 +124,13 @@ void Obj::leerCara(stringstream &ss, int ln)
   }
 
   caras.push_back(indicesVertices);
+  for (size_t i = 0; i < indicesVertices.size(); i++)
+  {
+    if (i < indicesNormales.size())
+    {
+      normIndex.push_back(make_pair(indicesVertices[i], indicesNormales[i]));
+    }
+  }
 }
 
 void Obj::leerNormales(stringstream &ss, int ln)

@@ -2,7 +2,13 @@
 #include "vecmatriz.h"
 #include "objreader.h"
 #include "modelo.h"
+#include <GLFW/glfw3.h>
 #include <iostream>
+
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+Vector3 cam;
+Matrix4 view;
+Vector3 centroCubo;
 
 int main(int argc, char *argv[])
 {
@@ -37,16 +43,18 @@ int main(int argc, char *argv[])
   modelo1.initgl(vert, frag);
 
   Puntof centroCuboPf = objf.centroProm();
-  Vector3 centroCubo(centroCuboPf.x, centroCuboPf.y, centroCuboPf.z);
+  centroCubo = Vector3(centroCuboPf.x, centroCuboPf.y, centroCuboPf.z);
 
-  Vector3 cam(centroCuboPf.x + objf.anchox() + 10, 5, 0);
+  cam = Vector3(centroCuboPf.x + objf.anchox() + 10, 5, 0);
 
   std::cout << "Modelo: " << objf.filedir << std::endl;
   std::cout << "No. de vértices: " << objf.vertices.size() << std::endl;
   std::cout << "No. de caras: " << objf.caras.size() << std::endl;
 
-  Matrix4 view = Matrix4::lookAt(cam, centroCubo, Vector3(0.0f,1.0f,0.0f));
+  view = Matrix4::lookAt(cam, centroCubo, Vector3(0.0f,1.0f,0.0f));
   Matrix4 projection = Matrix4::perspective(45.0f, 1000.0f/800.0f, 0.1f, 100.0f);
+
+  glfwSetKeyCallback(w1.win, keyCallback);
 
   while (true)
   {
@@ -61,4 +69,40 @@ int main(int argc, char *argv[])
   }
 
   return 0;
+}
+
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+  if (action == GLFW_PRESS)
+  {
+    switch (key)
+    {
+      case GLFW_KEY_DOWN:
+        cam = Vector3(cam.x+0.5, cam.y, cam.z);
+        break;
+        
+      case GLFW_KEY_UP:
+        cam = Vector3(cam.x-0.5, cam.y, cam.z);
+        break;
+
+      case GLFW_KEY_LEFT:
+        cam = Vector3(cam.x, cam.y, cam.z+1.0);
+        break;
+
+      case GLFW_KEY_RIGHT:
+        cam = Vector3(cam.x, cam.y, cam.z-1.0);
+        break;
+
+      case GLFW_KEY_SPACE:
+        cam = Vector3(cam.x, cam.y+1.0, cam.z);
+        break;
+
+      case GLFW_KEY_LEFT_SHIFT:
+      case GLFW_KEY_RIGHT_SHIFT:
+        cam = Vector3(cam.x, cam.y-1.0, cam.z);
+        break;
+    }
+  }
+
+  view = Matrix4::lookAt(cam, centroCubo, Vector3(0.0f,1.0f,0.0f));
 }

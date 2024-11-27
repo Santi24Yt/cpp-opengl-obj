@@ -11,6 +11,7 @@ public:
   int width;
   int height;
   std::string name;
+  GLFWwindow *win;
 
   Ventana(int w, int h, std::string n) : width(w), height(h), name(n) {};
 
@@ -21,7 +22,6 @@ public:
 
 
 private:
-  GLFWwindow *win;
 
   void initGLEW();
 };

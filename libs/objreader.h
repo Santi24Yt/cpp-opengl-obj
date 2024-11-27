@@ -21,6 +21,7 @@ class Obj {
   vector<Puntof> vertices;
   vector<vector<int>> caras;
   vector<Puntof> normales;
+  vector<pair<int, int>> normIndex;
   string filedir;
 
   Obj(string filedir);

@@ -1,6 +1,5 @@
 #include "modelo.h"
 #include <iostream>
-// #include <iomanip>
 
 void Modelo::toScreen(Matrix4 &vista, int wi, int h)
 {
@@ -34,13 +33,24 @@ void Modelo::transform(Matrix4 &transform)
   }
 }
 
-size_t Modelo::indiceVerticeCara(vector<int> &cara, size_t i)
+size_t Modelo::indiceVertice(int i)
 {
-  long ip1 = cara[i];
+  long ip1 = i;
   size_t i1 = ip1;
 
   if (ip1 < 0)
-    i1 = 1 + verticesModelo.size() + ip1;
+    i1 = verticesModelo.size() + ip1;
+
+  return i1;
+}
+
+size_t Modelo::indiceNormal(int i)
+{
+  long ip1 = i;
+  size_t i1 = ip1;
+
+  if (ip1 < 0)
+    i1 = normales.size() + ip1;
 
   return i1;
 }
@@ -61,17 +71,9 @@ void Modelo::genVertexArray()
     vertices[i+1] = (GLfloat)p.y;
     vertices[i+2] = (GLfloat)p.z;
 
-    // Normales
-    Vector3 n = normales[j];
-    vertices[i+3] = (GLfloat)n.x;
-    vertices[i+4] = (GLfloat)n.y;
-    vertices[i+5] = (GLfloat)n.z;
-
-    // for (int k = 0; k < 6; k++)
-    // {
-    //   cout << std::fixed << std::setprecision(3);
-    //   cout << "vertices[" << (i+k) << "] = " << vertices[i+k] << "f" << endl;
-    // }
+    vertices[i+3] = (GLfloat)0;
+    vertices[i+4] = (GLfloat)0;
+    vertices[i+5] = (GLfloat)0;
   }
 
   indices = new GLuint[caras.size() * 3];
@@ -79,14 +81,23 @@ void Modelo::genVertexArray()
   for (size_t i = 0, j = 0; i < caras.size()*3; i += 3, j++)
   {
     vector<int> cara = caras[j];
-    indices[i+0] = (GLuint)(indiceVerticeCara(cara, 0) - 1);
-    indices[i+1] = (GLuint)(indiceVerticeCara(cara, 1) - 1);
-    indices[i+2] = (GLuint)(indiceVerticeCara(cara, 2) - 1);
+    indices[i+0] = (GLuint)indiceVertice(cara[0]);
+    indices[i+1] = (GLuint)indiceVertice(cara[1]);
+    indices[i+2] = (GLuint)indiceVertice(cara[2]);
+  }
 
-    // for (int k = 0; k < 3; k++)
-    // {
-    //   cout << "indices[" << (i+k) << "] = " << indices[i+k] << endl;
-    // }
+  for (pair<int, int> p : normIndex)
+  {
+    int vi = indiceVertice(p.first)*6;
+    size_t ni = indiceNormal(p.second);
+
+    if (ni < normales.size())
+    {
+      Vector3 normal = normales[ni];
+      vertices[vi+3+0] = (GLfloat)normal.x;
+      vertices[vi+3+1] = (GLfloat)normal.y;
+      vertices[vi+3+2] = (GLfloat)normal.z;
+    }
   }
 }
 
