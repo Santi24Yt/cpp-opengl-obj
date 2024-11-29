@@ -39,9 +39,9 @@ size_t Modelo::indiceVertice(int i)
   size_t i1 = ip1;
 
   if (ip1 < 0)
-    i1 = verticesModelo.size() + ip1;
+    i1 = 1 + verticesModelo.size() + ip1;
 
-  return i1;
+  return i1 - 1;
 }
 
 size_t Modelo::indiceNormal(int i)
@@ -50,9 +50,9 @@ size_t Modelo::indiceNormal(int i)
   size_t i1 = ip1;
 
   if (ip1 < 0)
-    i1 = normales.size() + ip1;
+    i1 = 1 + normales.size() + ip1;
 
-  return i1;
+  return i1 - 1;
 }
 
 void Modelo::genVertexArray()
