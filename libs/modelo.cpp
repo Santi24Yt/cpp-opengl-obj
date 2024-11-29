@@ -94,9 +94,15 @@ void Modelo::genVertexArray()
     if (ni < normales.size())
     {
       Vector3 normal = normales[ni];
-      vertices[vi+3+0] = (GLfloat)normal.x;
-      vertices[vi+3+1] = (GLfloat)normal.y;
-      vertices[vi+3+2] = (GLfloat)normal.z;
+
+      if (vertices[vi+3+0] == (GLfloat)0.0f)
+        vertices[vi+3+0] = (GLfloat)normal.x;
+
+      if (vertices[vi+3+1] == (GLfloat)0.0f)
+        vertices[vi+3+1] = (GLfloat)normal.y;
+
+      if (vertices[vi+3+2] == (GLfloat)0.0f)
+        vertices[vi+3+2] = (GLfloat)normal.z;
     }
   }
 }
