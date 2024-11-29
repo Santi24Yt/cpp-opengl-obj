@@ -20,3 +20,13 @@ Para ejecución y compilación ver `README`
 
 TODO: Añadir video
 
+En el video se puede ver como el shader por default pinta todos los pixeles del modelo
+de blanco, también como se puede elegir un shader para el modelo, en este caso se
+tiene implementado iluminación con el modelo de Gouraud y Phong, aunque estos dependen
+de que el .obj tenga definidas las normales.
+
+Todavía hay algunos pequeños fallos difíciles de notar en casos en los que se define un mismo
+vértice para multiples caras con distintas normales. (No recuerdo si sale en el video).
+
+También podemos ver que como ya usamos OpenGL este aprovecha al máximo las capacidades
+de nuestra computadora por lo que el modelo del dragon ya funciona de manera fluida.
