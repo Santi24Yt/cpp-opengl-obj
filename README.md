@@ -18,7 +18,10 @@ hacer utilizando el teclado.
 Para ejecución y compilación ver `README`
 
 
-TODO: Añadir video
+
+https://github.com/user-attachments/assets/800c00e0-3c00-4cf6-a6bf-5c0c152da098
+
+
 
 En el video se puede ver como el shader por default pinta todos los pixeles del modelo
 de blanco, también como se puede elegir un shader para el modelo, en este caso se
